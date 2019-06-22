@@ -129,7 +129,7 @@ end
 delete(w);
 
 %% Plota grafico 3D das 3 primeiras componentes principais
-% visualizacao_pca(data(:, 1:ATRIBUTOS), all_classes, CLASSES);
+visualizacao_pca(data(:, 1:ATRIBUTOS), all_classes, CLASSES);
 
 %% Plota acertos das iteracoes executadas
 figure('Units','normalized','Position',[0 0 1 1]);

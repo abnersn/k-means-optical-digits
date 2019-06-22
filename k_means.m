@@ -2,7 +2,8 @@ function [ indexes, centroids, vrc ] = k_means( data, k )
     % K_MEANS Aplica o algoritmo k-means sobre um conjunto de dados.
     %% K-Means
     % Inicializacao das variaveis
-    centroids = data(randsample(size(data, 1), k), :); % Escolhe k centros dentre as amostras da base aleatoriamente
+    r = randsample(size(data, 1), k);
+    centroids = data(r, :); % Escolhe k centros dentre as amostras da base aleatoriamente
     new_centroids = ones(k, size(data, 2)) * inf;
     indexes = ones(size(data, 1), 1); % Cluster mais proximo de cada amostra da base
 
