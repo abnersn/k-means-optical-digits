@@ -13,7 +13,7 @@ rng(1); % Para reproduzir os resultados
 %% Configuracoes
 CLASSES = 10;
 ATRIBUTOS = 64;
-ITERACOES = 50;
+ITERACOES = 10;
 CONSTANTE_SVM = 1;
 KERNEL = 'polynomial';
 USANDO_PCA = false;
@@ -90,7 +90,7 @@ for i=1:ITERACOES
     for j = 1:CLASSES
         c = train_classes == j;
         models{j} = fitcsvm(train_features, uint8(c)*j,...
-            'KernelFunction', KERNEL,'PolynomialOrder', 2, 'BoxConstraint', CONSTANTE_SVM,...
+            'KernelFunction', KERNEL, 'PolynomialOrder', 2, 'BoxConstraint', CONSTANTE_SVM,...
             'Standardize', true, 'ClassNames', {int2str(0), int2str(j)});
         progress = (i - 1 + (j/CLASSES)) / ITERACOES;
         waitbar(progress , w, sprintf('Iteracao %d - Numero %d - (%.2f%%)', i, j - 1, progress*100))
@@ -129,7 +129,7 @@ end
 delete(w);
 
 %% Plota grafico 3D das 3 primeiras componentes principais
-visualizacao_pca(data(:, 1:ATRIBUTOS), all_classes, CLASSES);
+% visualizacao_pca(data(:, 1:ATRIBUTOS), all_classes, CLASSES);
 
 %% Plota acertos das iteracoes executadas
 figure('Units','normalized','Position',[0 0 1 1]);
