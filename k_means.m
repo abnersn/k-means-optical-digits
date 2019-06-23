@@ -1,4 +1,4 @@
-function [ indexes, centroids, vrc ] = k_means( data, k )
+function [ indexes, centroids, vrc, predicted_class ] = k_means( data, k, predict, expected_class )
     % K_MEANS Aplica o algoritmo k-means sobre um conjunto de dados.
     %% K-Means
     % Inicializacao das variaveis
@@ -33,7 +33,18 @@ function [ indexes, centroids, vrc ] = k_means( data, k )
         numIter = numIter + 1;
     end
     fprintf('Número de Iterações: %d\n', numIter);
-    
+    % Etapa de re-mapeamento; descobrindo a qual classe pertence cada
+    % centroide a fim de "traduzir" para o vetor predicted_classes as reais
+    % classes para comparacao e calculo de acuracia
+    if predict
+        centroids_classes = expected_class(r);
+        for i = 1:k
+            indexes(indexes == i) = centroids_classes(i) * 11; % Re-mapeando o numero da classe do cluster
+        end
+        predicted_class = uint8(indexes / 11);
+    else
+        predicted_class = [];
+    end
     %% VRC
 
     % Variancia entre clusters
