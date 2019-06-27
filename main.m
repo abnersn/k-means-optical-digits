@@ -85,11 +85,23 @@ hits = all_classes == idx;
 fprintf('K-Means - Acurácia = %.2f%%\n', 100 * nnz(hits) / length(hits));
 
 %% C-Means e cálculo de acurácia
-[idx, centroids] = c_means(all_features, CLASSES);
-idx = map_indexes(CLASSES, idx, centroids, all_features, all_classes);
+% [idx, centroids] = c_means(all_features, CLASSES);
+% idx = map_indexes(CLASSES, idx, centroids, all_features, all_classes);
+% 
+% hits = all_classes == idx;
+% fprintf('C-Means - Acurácia = %.2f%%\n', 100 * nnz(hits) / length(hits));
 
-hits = all_classes == idx;
-fprintf('C-Means - Acurácia = %.2f%%\n', 100 * nnz(hits) / length(hits));
+%% Plot confusion K-Means
+figure();
+N = size(all_classes, 1);
+targets = zeros(CLASSES, N);
+outputs = zeros(CLASSES, N);
+for i = 1:N
+    targets(all_classes(i), i) = 1;
+    outputs(idx(i), i) = 1;
+end
+
+plotconfusion(targets, outputs);
 
 %% Comparação com a acurácia do classificador SVM utilizado no trabalho 2 da disciplina
 fprintf('No SVM conseguimos uma acurácia média de 98.60%% usando kernel polinomial de grau 2, ');
