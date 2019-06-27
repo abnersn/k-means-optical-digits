@@ -26,4 +26,3 @@ function [vrc] = VRC(data, centroids, indexes)
     % Calculo do VRC
     vrc = B / W;
 end
-

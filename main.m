@@ -8,7 +8,7 @@
 % Lucas
 
 clear; close all force; clc;
-rng(1);
+rng('default');
 
 %% Definições da base
 CLASSES = 10;
@@ -19,10 +19,18 @@ data = csvread('training.csv');
 all_classes = data(:, size(data, 2)) + 1;
 all_features = data(:, 1:ATRIBUTOS);
 
+N = size(all_classes, 1);
+fprintf('*** Execucao do K-Means e C-Means sobre a base Optical Digits (https://bit.ly/2xDW3IY) ***\n\n');
+fprintf('Informações da base:\n');
+fprintf('- Amostras: %d\n', N);
+fprintf('- Classes: %d\n', CLASSES);
+fprintf('- Atributos: %d\n\n', ATRIBUTOS);
+
 %% Encontrando o K (número de cluster) ideal pelo VRC e Largura de Silhueta
 range_tests = 5:12;
 
 for i = range_tests
+    fprintf('Efetuando teste de VRC e SWC para %d clusters.\n', i);
     j = find(range_tests == i);
     
     [idx, c] = k_means(all_features, i);
@@ -33,6 +41,7 @@ for i = range_tests
     VRC_CM(j) = VRC(all_features, c, idx);
     S_CM(j) = mean(silhouette(all_features, idx));
 end
+fprintf('\n\nValores ideais de K pelo cálculo do VRC e SWC.\n');
 
 %% Plotagem dos valores de VRC e SWC para cada número de clusters testado no K-Means e no C-Means
 [~, id] = max(VRC_KM);
@@ -75,25 +84,19 @@ xlabel('Valores de K');
 ylabel('SWC');
 
 fprintf('---C-Means:\n');
-fprintf('VRC = %d clusters.\nSWC = %d clusters.\n', K_VRC_CM, K_S_CM);
+fprintf('VRC = %d clusters.\nSWC = %d clusters.\n\n', K_VRC_CM, K_S_CM);
 
 %% K-Means e cálculo de acurácia
+fprintf('Acurácias:\n');
 [idx, centroids] = k_means(all_features, CLASSES);
 idx = map_indexes(CLASSES, idx, centroids, all_features, all_classes);
 
 hits = all_classes == idx;
-fprintf('K-Means - Acurácia = %.2f%%\n', 100 * nnz(hits) / length(hits));
-
-%% C-Means e cálculo de acurácia
-% [idx, centroids] = c_means(all_features, CLASSES);
-% idx = map_indexes(CLASSES, idx, centroids, all_features, all_classes);
-% 
-% hits = all_classes == idx;
-% fprintf('C-Means - Acurácia = %.2f%%\n', 100 * nnz(hits) / length(hits));
+acc_KM = 100 * nnz(hits) / length(hits);
+fprintf('K-Means = %.2f%%\n', acc_KM);
 
 %% Plot confusion K-Means
 figure();
-N = size(all_classes, 1);
 targets = zeros(CLASSES, N);
 outputs = zeros(CLASSES, N);
 for i = 1:N
@@ -103,5 +106,13 @@ end
 
 plotconfusion(targets, outputs);
 
+%% C-Means e cálculo de acurácia
+[idx, centroids] = c_means(all_features, CLASSES);
+idx = map_indexes(CLASSES, idx, centroids, all_features, all_classes);
+
+hits = all_classes == idx;
+acc_CM = 100 * nnz(hits) / length(hits);
+fprintf('C-Means = %.2f%%\n\n', acc_CM);
+
 %% Comparação com a acurácia do classificador SVM utilizado no trabalho 2 da disciplina
-fprintf('No SVM conseguimos uma acurácia média de 98.60%% usando kernel polinomial de grau 2, ');
+fprintf('Acurácia média:\n\nUsando classificação\nSVM: 98.60%% com kernel polinomial de grau 2\n\nUsando agrupamento\nK-Means: %.2f%% \nC-Means: %.2f%%\n', acc_KM, acc_CM);
