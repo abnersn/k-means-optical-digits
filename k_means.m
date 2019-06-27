@@ -1,5 +1,5 @@
 function [indexes, centroids] = k_means(data, k)
-    % K_MEANS Aplica o algoritmo k-means sobre um conjunto de dados.
+    % K_MEANS Aplica o algoritmo K-Means sobre um conjunto de dados.
     %% K-Means
     % Inicializacao das variaveis
     r = randsample(size(data, 1), k);

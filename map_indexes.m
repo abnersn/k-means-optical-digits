@@ -4,7 +4,7 @@ function [new_idx] = map_indexes(k, idx, centroids, data, classes)
     % supervisionada, para que eles correspondam a classe mais proxima do
     % dataset.
     available_centroids = 1:k;
-    idx_map = [1:k; 1:k]';
+    idx_map = [1:k; 1:k].';
     for i=1:k
         km_centroid = centroids(i, :);
         closest_distance = inf;
