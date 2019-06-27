@@ -1,6 +1,6 @@
 function [vrc] = VRC(data, centroids, indexes)
     % VRC calcula o Variance Ratio Criterion dos clusters gerados, para
-    % avaliação posterior de qualidade do agrupamento.
+    % avaliacao posterior de qualidade do agrupamento.
     %% VRC
     k = size(centroids, 1);
     

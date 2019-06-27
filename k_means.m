@@ -26,11 +26,11 @@ function [indexes, centroids] = k_means(data, k)
             samples = data(indexes == i, :); % Amostras do cluster i
             new_centroids(i, :) = mean(samples); % Nova media do cluster i
         end
-        % Diferença entre novos centroides e centroides anteriores
+        % Diferenca entre novos centroides e centroides anteriores
         centroid_ratio = sum(sqrt(sum((centroids - new_centroids) .^ 2)));
         centroids = new_centroids;
         
         numIter = numIter + 1;
     end
-%     fprintf('Número de Iterações: %d\n', numIter);
+%     fprintf('Numero de Iteracoes: %d\n', numIter);
 end
